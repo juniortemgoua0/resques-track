@@ -16,7 +16,7 @@ export class Speciality {
     department: Department;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId , ref: ModelName.CLASSROOM}] , default: []})
-    classroom: Classroom[];
+    classrooms: Classroom[];
 
 
 }

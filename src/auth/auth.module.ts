@@ -3,10 +3,10 @@ import {AuthController} from './auth.controller';
 import {AuthService} from './auth.service';
 import {JwtModule} from "@nestjs/jwt";
 import {PassportModule} from "@nestjs/passport";
-import {LocalStrategy} from "./local.strategy";
-import {LocalAuthGuard} from "./local-auth.guard";
-import {JwtAuthGuard} from "./jwt-auth.guard";
-import {JwtStrategy} from "./jwt.strategy";
+import {LocalStrategy} from "./security/local.strategy";
+import {LocalAuthGuard} from "./security/local-auth.guard";
+import {JwtAuthGuard} from "./security/jwt-auth.guard";
+import {JwtStrategy} from "./security/jwt.strategy";
 import {ConfigModule} from "@nestjs/config";
 
 

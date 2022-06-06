@@ -17,11 +17,11 @@ export class DepartmentService {
     }
 
     getAllDepartments() {
-        return this.departmentModel.find();
+        return this.departmentModel.find().populate(["school", "specialities"]).exec();
     }
 
     getOneDepartment(departmentId: string) {
-        return this.departmentModel.findById(departmentId);
+        return this.departmentModel.findById(departmentId).populate(["school", "specialities"]).exec();
     }
 
     async createDepartment(createDepartmentDto: CreateDepartmentDto) {

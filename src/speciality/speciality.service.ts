@@ -17,11 +17,11 @@ export class SpecialityService {
     }
 
     getAllSpecialities() {
-        return this.specialityModel.find();
+        return this.specialityModel.find().populate(["classrooms", "department"]).exec();
     }
 
     getOneSpeciality(specialityId: string) {
-        return this.specialityModel.findById(specialityId);
+        return this.specialityModel.findById(specialityId).populate(["classrooms", "department"]).exec();
     }
 
     async createSpeciality(createSpecialityDto: CreateSpecialityDto) {

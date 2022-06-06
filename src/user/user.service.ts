@@ -14,11 +14,11 @@ export class UserService {
     }
 
     getAllUsers() {
-        return this.userModel.find();
+        return this.userModel.find().populate(["student"]).exec();
     }
 
     getOneUser(userId: string) {
-        return this.userModel.findById(userId);
+        return this.userModel.findById(userId).populate(["student"]).exec();
     }
 
     updateUser(userId: string, updateUserDto: UpdateUserDto) {

@@ -44,14 +44,14 @@ export class ClassroomService {
                 await this.courseModel.findByIdAndUpdate(
                     course_id,
                     {$push: {classrooms: createdClassroom}},
-                    {new: true, upsert:true}
+                    {new: true, upsert: true}
                 );
             }
         }
 
         await this.specialityModel.findByIdAndUpdate(
             speciality_id,
-            {$push: {classroom: createdClassroom}},
+            {$push: {classrooms: createdClassroom}},
             {new: true, upsert: true}
         );
 
@@ -59,7 +59,7 @@ export class ClassroomService {
     }
 
     async updateClassroom(classroomId: string, updateClassroomDto: UpdateClassroomDto) {
-        const {speciality_id, courses, ...remain} = updateClassroomDto;
+        const {speciality_id, ...remain} = updateClassroomDto;
 
         const checkClassroom = await this.classroomModel.findOne({name: remain.name})
         if (checkClassroom) {
