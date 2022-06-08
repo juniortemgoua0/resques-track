@@ -9,7 +9,8 @@ import {DepartmentModule} from './department/department.module';
 import {SpecialityModule} from './speciality/speciality.module';
 import {SchoolModule} from './school/school.module';
 import {ClassroomModule} from './classroom/classroom.module';
-import {JwtModule} from "@nestjs/jwt";
+import {AppController} from './app.controller';
+import {RequestModule} from './request/request.module';
 
 @Global()
 @Module({
@@ -24,8 +25,11 @@ import {JwtModule} from "@nestjs/jwt";
         SpecialityModule,
         SchoolModule,
         ClassroomModule,
+        RequestModule,
     ],
     exports: [ConfigModule],
+    controllers: [AppController],
 })
 export class AppModule {
+
 }

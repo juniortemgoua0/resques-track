@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {CreateClassroomDto, UpdateClassroomDto} from "./dto";
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {Model} from "mongoose";
 import {ClassroomDocument} from "./classroom.schema";
 import {SpecialityDocument} from "../speciality/speciality.schema";

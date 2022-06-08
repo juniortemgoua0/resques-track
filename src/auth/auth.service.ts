@@ -7,7 +7,7 @@ import {StudentDocument} from "../student/student.schema";
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 export enum UserStatusType {
     USER = "user",
@@ -46,7 +46,7 @@ export class AuthService {
         * At there we are making the same treatment as in the previous case just that here we return a student 
         * instead 
         * */
-        const checkStudent = (await this.studentModel.findOne({email: username}).where({school: school_id}))||
+        const checkStudent = (await this.studentModel.findOne({email: username}).where({school: school_id})) ||
             (await this.studentModel.findOne({phone_number: username}).where({school: school_id}));
         if (checkStudent) {
             return {
@@ -93,8 +93,8 @@ export class AuthService {
     async validateUser(username: string, password: string): Promise<any> {
 
         const user = await this.userService.findOne(username);
-        if(user){
-            const isMatch = await bcrypt.compare(password, user.password);
+        if (user) {
+            const isMatch = await bcrypt.compare(password, user['password']);
             if (user && isMatch) {
                 const {password, ...result} = user
                 return result

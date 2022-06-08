@@ -2,7 +2,7 @@ import mongoose, {Document} from "mongoose";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";
 import {School} from "../school/school.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 export type StudentDocument = Student & Document
 

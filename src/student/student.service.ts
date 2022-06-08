@@ -4,7 +4,7 @@ import {Model} from "mongoose";
 import {StudentDocument} from "./student.schema";
 import {CreateStudentDto, UpdateStudentDto} from "./dto";
 import {SchoolDocument} from "../school/school.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {ClassroomDocument} from "../classroom/classroom.schema";
 
 @Injectable()

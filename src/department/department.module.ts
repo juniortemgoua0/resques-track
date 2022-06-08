@@ -3,7 +3,7 @@ import {DepartmentController} from './department.controller';
 import {DepartmentService} from './department.service';
 import {MongooseModule} from "@nestjs/mongoose";
 import {DepartmentSchema} from "./department.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 @Global()
 @Module({

@@ -3,7 +3,7 @@ import {CourseController} from './course.controller';
 import {CourseService} from './course.service';
 import {MongooseModule} from "@nestjs/mongoose";
 import {CourseSchema} from "./course.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 @Global()
 @Module({

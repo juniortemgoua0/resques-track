@@ -1,5 +1,4 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
-import {CreateDepartmentDto, UpdateDepartmentDto} from "../department/dto";
 import {ClassroomService} from "./classroom.service";
 import {CreateClassroomDto, UpdateClassroomDto} from "./dto";
 

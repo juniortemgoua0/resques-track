@@ -1,7 +1,6 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {SpecialityService} from "./speciality.service";
 import {CreateSpecialityDto, UpdateSpecialityDto} from "./dto";
-import {UpdateSchoolDto} from "../school/dto";
 
 @Controller('speciality')
 export class SpecialityController {
