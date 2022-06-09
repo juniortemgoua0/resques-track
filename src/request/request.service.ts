@@ -9,4 +9,13 @@ export class RequestService {
 
     constructor(@InjectModel(ModelName.REQUEST) private requestModel: Model<RequestDocument>) {
     }
+
+    getAllRequests() {
+        return this.requestModel.find();
+    }
+
+    getStudentRequests(studentId: string) {
+        return this.requestModel.find().where({student: studentId});
+    }
+
 }

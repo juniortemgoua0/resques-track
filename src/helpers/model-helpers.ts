@@ -6,5 +6,7 @@ export enum ModelName {
     SPECIALITY = "Speciality",
     STUDENT = "Student",
     USER = "User",
-    REQUEST = "request"
+    REQUEST = "request",
+    LEVEL = "level",
+    PERSONNEL = "personnel"
 }

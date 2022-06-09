@@ -18,7 +18,6 @@ export class Speciality {
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId , ref: ModelName.CLASSROOM}] , default: []})
     classrooms: Classroom[];
 
-
 }
 
 export const SpecialitySchema = SchemaFactory.createForClass(Speciality)

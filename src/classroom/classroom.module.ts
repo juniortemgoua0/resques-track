@@ -8,7 +8,9 @@ import {ModelName} from "../helpers";
 @Global()
 @Module({
     imports: [
-        MongooseModule.forFeature([{name: ModelName.CLASSROOM, schema: ClassroomSchema}])
+        MongooseModule.forFeature([
+            {name: ModelName.CLASSROOM, schema: ClassroomSchema}
+        ])
     ],
     exports: [MongooseModule],
     providers: [ClassroomService],

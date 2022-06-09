@@ -11,6 +11,8 @@ import {SchoolModule} from './school/school.module';
 import {ClassroomModule} from './classroom/classroom.module';
 import {AppController} from './app.controller';
 import {RequestModule} from './request/request.module';
+import { LevelModule } from './level/level.module';
+import { PersonnelModule } from './personnel/personnel.module';
 
 @Global()
 @Module({
@@ -26,6 +28,8 @@ import {RequestModule} from './request/request.module';
         SchoolModule,
         ClassroomModule,
         RequestModule,
+        LevelModule,
+        PersonnelModule,
     ],
     exports: [ConfigModule],
     controllers: [AppController],
