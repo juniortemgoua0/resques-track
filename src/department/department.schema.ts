@@ -1,7 +1,7 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import mongoose, {Document} from "mongoose";
 import {Speciality} from "../speciality/speciality.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {School} from "../school/school.schema";
 
 export type DepartmentDocument = Department & Document

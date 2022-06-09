@@ -27,12 +27,12 @@ export class DepartmentController {
     updateDepartment(
         @Param('departmentId') departmentId: string,
         @Body() updateDepartmentDto: UpdateDepartmentDto
-    ){
-        return this.departmentService.updateDepartment(departmentId , updateDepartmentDto)
+    ) {
+        return this.departmentService.updateDepartment(departmentId, updateDepartmentDto);
     }
 
     @Delete(':departmentId')
-    deleteDepartment(@Param('departmentId') departmentId : string){
+    deleteDepartment(@Param('departmentId') departmentId: string) {
         return this.departmentService.deleteDepartment(departmentId);
     }
 }

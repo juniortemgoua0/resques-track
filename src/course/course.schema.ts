@@ -1,8 +1,8 @@
+/* eslint-disable prettier/prettier */
 import mongoose, {Document} from "mongoose";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";
-import {ModelName} from "../helpers/model-helpers";
-import {Speciality} from "../speciality/speciality.schema";
+import {ModelName} from "../helpers";
 
 export type CourseDocument = Course & Document
 

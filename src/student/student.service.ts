@@ -4,7 +4,7 @@ import {Model} from "mongoose";
 import {StudentDocument} from "./student.schema";
 import {CreateStudentDto, UpdateStudentDto} from "./dto";
 import {SchoolDocument} from "../school/school.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {ClassroomDocument} from "../classroom/classroom.schema";
 
 @Injectable()
@@ -18,11 +18,11 @@ export class StudentService {
     }
 
     getAllStudents() {
-        return this.studentModel.find();
+        return this.studentModel.find().populate(["classroom", "school"]).exec();
     }
 
     getOneStudent(studentId: string) {
-        return this.studentModel.findById(studentId);
+        return this.studentModel.findById(studentId).populate(["classroom", "school"]).exec();
     }
 
     async createStudent(createStudentDto: CreateStudentDto) {

@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {Model} from "mongoose";
 import {DepartmentDocument} from "./department.schema";
 import {CreateDepartmentDto, UpdateDepartmentDto} from "./dto";
@@ -17,19 +17,19 @@ export class DepartmentService {
     }
 
     getAllDepartments() {
-        return this.departmentModel.find();
+        return this.departmentModel.find().populate(["school", "specialities"]).exec();
     }
 
     getOneDepartment(departmentId: string) {
-        return this.departmentModel.findById(departmentId);
+        return this.departmentModel.findById(departmentId).populate(["school", "specialities"]).exec();
     }
 
     async createDepartment(createDepartmentDto: CreateDepartmentDto) {
         const {school_id, ...remain} = createDepartmentDto;
 
-        const checkDepartment = await this.departmentModel.findOne({name: remain.name})
+        const checkDepartment = await this.departmentModel.findOne({name: remain.name});
         if (checkDepartment) {
-            throw new HttpException("name taken", HttpStatus.UNAUTHORIZED)
+            throw new HttpException("name taken", HttpStatus.UNAUTHORIZED);
         }
 
         const createdDepartment = await new this.departmentModel({
@@ -50,9 +50,9 @@ export class DepartmentService {
 
         const {school_id , ...remain} = updateDepartmentDto;
 
-        const checkDepartment = await this.departmentModel.findOne({name: remain.name})
+        const checkDepartment = await this.departmentModel.findOne({name: remain.name});
         if (checkDepartment) {
-            throw new HttpException("name taken", HttpStatus.UNAUTHORIZED)
+            throw new HttpException("name taken", HttpStatus.UNAUTHORIZED);
         }
 
         return this.departmentModel.findByIdAndUpdate(
@@ -63,6 +63,6 @@ export class DepartmentService {
     }
 
     deleteDepartment(departmentId: string) {
-        return this.departmentModel.findByIdAndDelete(departmentId)
+        return this.departmentModel.findByIdAndDelete(departmentId);
     }
 }

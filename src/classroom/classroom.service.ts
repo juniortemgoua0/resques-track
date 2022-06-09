@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {CreateClassroomDto, UpdateClassroomDto} from "./dto";
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {Model} from "mongoose";
 import {ClassroomDocument} from "./classroom.schema";
 import {SpecialityDocument} from "../speciality/speciality.schema";
@@ -44,14 +44,14 @@ export class ClassroomService {
                 await this.courseModel.findByIdAndUpdate(
                     course_id,
                     {$push: {classrooms: createdClassroom}},
-                    {new: true, upsert:true}
+                    {new: true, upsert: true}
                 );
             }
         }
 
         await this.specialityModel.findByIdAndUpdate(
             speciality_id,
-            {$push: {classroom: createdClassroom}},
+            {$push: {classrooms: createdClassroom}},
             {new: true, upsert: true}
         );
 
@@ -59,7 +59,7 @@ export class ClassroomService {
     }
 
     async updateClassroom(classroomId: string, updateClassroomDto: UpdateClassroomDto) {
-        const {speciality_id, courses, ...remain} = updateClassroomDto;
+        const {speciality_id, ...remain} = updateClassroomDto;
 
         const checkClassroom = await this.classroomModel.findOne({name: remain.name})
         if (checkClassroom) {

@@ -3,12 +3,14 @@ import {ClassroomService} from './classroom.service';
 import {ClassroomController} from './classroom.controller';
 import {MongooseModule} from "@nestjs/mongoose";
 import {ClassroomSchema} from "./classroom.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 @Global()
 @Module({
     imports: [
-        MongooseModule.forFeature([{name: ModelName.CLASSROOM, schema: ClassroomSchema}])
+        MongooseModule.forFeature([
+            {name: ModelName.CLASSROOM, schema: ClassroomSchema}
+        ])
     ],
     exports: [MongooseModule],
     providers: [ClassroomService],

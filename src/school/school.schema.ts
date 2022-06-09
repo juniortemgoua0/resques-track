@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import mongoose, {Document} from "mongoose";
 import {Department} from "../department/department.schema";
 import {Student} from "../student/student.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 
 export type SchoolDocument = School & Document;
 

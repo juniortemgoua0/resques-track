@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {Model, Schema} from "mongoose";
 import {SpecialityDocument} from "./speciality.schema";
 import {CreateSpecialityDto, UpdateSpecialityDto} from "./dto";
@@ -17,11 +17,11 @@ export class SpecialityService {
     }
 
     getAllSpecialities() {
-        return this.specialityModel.find();
+        return this.specialityModel.find().populate(["classrooms", "department"]).exec();
     }
 
     getOneSpeciality(specialityId: string) {
-        return this.specialityModel.findById(specialityId);
+        return this.specialityModel.findById(specialityId).populate(["classrooms", "department"]).exec();
     }
 
     async createSpeciality(createSpecialityDto: CreateSpecialityDto) {

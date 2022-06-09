@@ -1,7 +1,7 @@
 import mongoose, {Document} from "mongoose";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";
-import {ModelName} from "../helpers/model-helpers";
+import {ModelName} from "../helpers";
 import {Department} from "../department/department.schema";
 
 export type SpecialityDocument = Speciality & Document
@@ -16,8 +16,7 @@ export class Speciality {
     department: Department;
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId , ref: ModelName.CLASSROOM}] , default: []})
-    classroom: Classroom[];
-
+    classrooms: Classroom[];
 
 }
 
