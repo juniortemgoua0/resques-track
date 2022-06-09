@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {SchoolService} from "./school.service";
 import {CreateSchoolDto, UpdateSchoolDto} from "./dto";
