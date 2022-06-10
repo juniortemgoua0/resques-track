@@ -30,18 +30,18 @@ export class CreateStudentDto {
     @IsNotEmpty()
     classroom_id: string
 
-    // /*
-    // * These are a new fields
-    // * */
-    // @IsString()
-    // @IsNotEmpty()
-    // department_id: string
-    //
-    // @IsString()
-    // @IsNotEmpty()
-    // speciality_id: string
-    //
-    // @IsString()
-    // @IsNotEmpty()
-    // level_id: string
+    /*
+    * These are a new fields
+    * */
+    @IsString()
+    @IsNotEmpty()
+    department_id: string
+
+    @IsString()
+    @IsNotEmpty()
+    speciality_id: string
+
+    @IsString()
+    @IsNotEmpty()
+    level: string
 }

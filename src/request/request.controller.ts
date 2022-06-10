@@ -1,5 +1,6 @@
-import {Controller, Get, Param} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post} from '@nestjs/common';
 import {RequestService} from "./request.service";
+import {CreateRequestDto} from "./dto";
 
 @Controller('request')
 export class RequestController {
@@ -8,17 +9,20 @@ export class RequestController {
     }
 
     @Get('')
-    getAllRequests(){
+    getAllRequests() {
         return this.requestService.getAllRequests();
     }
 
     @Get(':studentId')
-    getStudentRequests(@Param('studentId') studentId: string){
+    getStudentRequest(@Param('studentId') studentId: string) {
         return this.requestService.getStudentRequests(studentId)
     }
 
-    @Get('')
-    getSecretaryRequests(){
-
+    @Post(':studentId')
+    createRequest(
+        @Param('studentId') studentId: string,
+        @Body() createRequestDto: CreateRequestDto
+    ) {
+        return this.requestService.createRequest(studentId, createRequestDto);
     }
 }

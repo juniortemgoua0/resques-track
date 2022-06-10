@@ -8,5 +8,6 @@ export enum ModelName {
     USER = "User",
     REQUEST = "request",
     LEVEL = "level",
-    PERSONNEL = "personnel"
+    PERSONNEL = "personnel",
+    ROLE = "role"
 }

@@ -3,6 +3,8 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";
 import {School} from "../school/school.schema";
 import {ModelName} from "../helpers";
+import {Department} from "../department/department.schema";
+import {Speciality} from "../speciality/speciality.schema";
 
 export type StudentDocument = Student & Document
 
@@ -30,6 +32,11 @@ export class Student {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SCHOOL})
     school: School;
 
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SPECIALITY})
+    speciality: Speciality;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.DEPARTMENT})
+    department: Department;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student)

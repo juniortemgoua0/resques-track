@@ -5,7 +5,6 @@ import {Model} from "mongoose";
 import {DepartmentDocument} from "./department.schema";
 import {CreateDepartmentDto, UpdateDepartmentDto} from "./dto";
 import {SchoolDocument} from "../school/school.schema";
-import * as mongoose from "mongoose";
 
 @Injectable()
 export class DepartmentService {

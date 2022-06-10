@@ -6,6 +6,7 @@ import {CreateStudentDto, UpdateStudentDto} from "./dto";
 import {SchoolDocument} from "../school/school.schema";
 import {ModelName} from "../helpers";
 import {ClassroomDocument} from "../classroom/classroom.schema";
+import {LevelDocument} from "../level/level.schema";
 
 @Injectable()
 export class StudentService {
@@ -13,7 +14,8 @@ export class StudentService {
     constructor(
         @InjectModel(ModelName.STUDENT) private readonly studentModel: Model<StudentDocument>,
         @InjectModel(ModelName.SCHOOL) private readonly schoolModel: Model<SchoolDocument>,
-        @InjectModel(ModelName.CLASSROOM) private readonly classroomModel: Model<ClassroomDocument>
+        @InjectModel(ModelName.CLASSROOM) private readonly classroomModel: Model<ClassroomDocument>,
+        @InjectModel(ModelName.LEVEL) private readonly levelModel: Model<LevelDocument>
     ) {
     }
 
@@ -27,7 +29,7 @@ export class StudentService {
 
     async createStudent(createStudentDto: CreateStudentDto) {
 
-        const {school_id, classroom_id, ...remain} = createStudentDto
+        const {school_id, classroom_id, level, ...remain} = createStudentDto
 
         const checkStudent = (await this.studentModel.findOne({email: remain.email})) ||
             (await this.studentModel.findOne({phone_number: remain.phone_number}));
@@ -53,7 +55,7 @@ export class StudentService {
             classroom_id,
             {$push: {students: createdStudent}},
             {new: true, upsert: true}
-        )
+        ).where({})
 
         return createdStudent;
     }

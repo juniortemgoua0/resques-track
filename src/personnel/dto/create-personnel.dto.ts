@@ -1,3 +1,37 @@
-export class CreatePersonnelDto{
+import {IsInt, IsNotEmpty, IsString} from "class-validator";
+
+export class CreatePersonnelDto {
+
+    @IsString()
+    @IsNotEmpty()
+    registration_number: string;
+
+    @IsString()
+    @IsNotEmpty()
+    last_name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    first_name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
+    @IsInt()
+    @IsNotEmpty()
+    phone_number: number;
+
+    @IsString()
+    @IsNotEmpty()
+    department_id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    school_id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    role_id: string;
 
 }

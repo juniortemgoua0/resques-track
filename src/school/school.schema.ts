@@ -3,6 +3,7 @@ import mongoose, {Document} from "mongoose";
 import {Department} from "../department/department.schema";
 import {Student} from "../student/student.schema";
 import {ModelName} from "../helpers";
+import {Personnel} from "../personnel/schema/personnel.schema";
 
 export type SchoolDocument = School & Document;
 
@@ -17,6 +18,9 @@ export class School {
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: ModelName.STUDENT}], default: []})
     students: Student[];
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: ModelName.PERSONNEL}], default: []})
+    personnel: Personnel[];
 }
 
 export const SchoolSchema = SchemaFactory.createForClass(School);

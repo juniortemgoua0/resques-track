@@ -4,6 +4,7 @@ import {Student} from "../student/student.schema";
 import {Course} from "../course/course.schema";
 import {ModelName} from "../helpers";
 import {Speciality} from "../speciality/speciality.schema";
+import {Level} from "../level/level.schema";
 
 export type ClassroomDocument = Classroom & Document
 
@@ -22,6 +23,8 @@ export class Classroom {
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: ModelName.COURSE}], default: []})
     courses: Course[];
 
+    // @Prop({required:true})
+    // level: true;
 }
 
 export const ClassroomSchema = SchemaFactory.createForClass(Classroom)

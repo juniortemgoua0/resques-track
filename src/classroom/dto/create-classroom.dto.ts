@@ -1,10 +1,14 @@
-import {IsArray, IsNotEmpty, IsString} from "class-validator";
+import {IsArray, IsNotEmpty, IsNumber, IsString} from "class-validator";
 
 export class CreateClassroomDto {
 
     @IsString()
     @IsNotEmpty()
     name: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    level: string;
 
     @IsString()
     @IsNotEmpty()

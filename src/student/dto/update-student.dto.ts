@@ -21,4 +21,19 @@ export class UpdateStudentDto{
     @IsInt()
     @IsNotEmpty()
     phone_number: number;
+
+    /*
+   * These are a new fields
+   * */
+    @IsString()
+    @IsNotEmpty()
+    department_id: string
+
+    @IsString()
+    @IsNotEmpty()
+    speciality_id: string
+
+    @IsString()
+    @IsNotEmpty()
+    level: string
 }

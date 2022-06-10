@@ -8,10 +8,12 @@ import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import {ModelName} from "../helpers";
+import {PersonnelDocument} from "../personnel/schema/personnel.schema";
 
 export enum UserStatusType {
     USER = "user",
-    STUDENT = "student"
+    STUDENT = "student",
+    PERSONNEL = "personnel"
 }
 
 @Injectable()
@@ -20,6 +22,7 @@ export class AuthService {
     constructor(
         @InjectModel(ModelName.USER) private readonly userModel: Model<UserDocument>,
         @InjectModel(ModelName.STUDENT) private readonly studentModel: Model<StudentDocument>,
+        @InjectModel(ModelName.PERSONNEL) private readonly personnelModel: Model<PersonnelDocument>,
         private userService: UserService,
         private jwtService: JwtService
     ) {
@@ -37,7 +40,7 @@ export class AuthService {
             (await this.userModel.findOne({phone_number: username}));
         if (checkUser) {
             return {
-                status: UserStatusType.USER,
+                role: UserStatusType.USER,
                 data: checkUser
             }
         }
@@ -50,8 +53,17 @@ export class AuthService {
             (await this.studentModel.findOne({phone_number: username}).where({school: school_id}));
         if (checkStudent) {
             return {
-                status: UserStatusType.STUDENT,
+                role: UserStatusType.STUDENT,
                 data: checkStudent
+            }
+        }
+
+        const checkPersonnel = (await this.personnelModel.findOne({email: username}).where({school: school_id})) ||
+            (await this.personnelModel.findOne({phone_number: username}).where({school: school_id}));
+        if(checkPersonnel){
+            return {
+                role: checkPersonnel['role'].name,
+                data: checkPersonnel
             }
         }
         throw new HttpException("This user is not register into our system ", HttpStatus.NOT_FOUND);
