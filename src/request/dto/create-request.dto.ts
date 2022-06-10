@@ -4,6 +4,11 @@ export class CreateRequestDto{
 
     @IsNotEmpty()
     @IsString()
+    request_id: string;
+
+
+    @IsNotEmpty()
+    @IsString()
     type_of_query:string;
 
      @IsNotEmpty()
@@ -22,4 +27,8 @@ export class CreateRequestDto{
     @IsNotEmpty()
     @IsString()
     level:string;
+
+    @IsNotEmpty()
+    @IsString()
+    student_id: string;
 }

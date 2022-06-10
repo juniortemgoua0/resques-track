@@ -5,9 +5,14 @@ export class UpdateRequestDto{
 
     @IsNotEmpty()
     @IsString()
-    type_of_query:string;
+    request_id: string;
+
 
     @IsNotEmpty()
+    @IsString()
+    type_of_query:string;
+
+     @IsNotEmpty()
     @IsString()
     status:string;
 
@@ -23,4 +28,8 @@ export class UpdateRequestDto{
     @IsNotEmpty()
     @IsString()
     level:string;
+
+    @IsNotEmpty()
+    @IsString()
+    student_id: string;
 }
