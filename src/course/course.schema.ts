@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import mongoose, {Document} from "mongoose";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";

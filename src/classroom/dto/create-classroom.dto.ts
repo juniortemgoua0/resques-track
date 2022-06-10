@@ -1,4 +1,5 @@
-import {IsArray, IsNotEmpty, IsNumber, IsString} from "class-validator";
+/* eslint-disable prettier/prettier */
+import {IsArray, IsNotEmpty, IsString, IsNumber} from "class-validator";
 
 export class CreateClassroomDto {
 

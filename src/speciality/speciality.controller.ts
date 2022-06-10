@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {SpecialityService} from "./speciality.service";
 import {CreateSpecialityDto, UpdateSpecialityDto} from "./dto";
