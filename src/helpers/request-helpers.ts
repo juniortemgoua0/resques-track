@@ -6,3 +6,8 @@ export enum RequestStatus {
     WAITING_FOR_PUBLICATION = 5,
     TO_ENCLOSE = 6
 }
+
+export enum LetterType{
+    ELECTRONIC_LETTER= "electronic",
+    HANDWRITTEN_LETTER = "handwritten"
+}

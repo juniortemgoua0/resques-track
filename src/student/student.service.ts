@@ -29,7 +29,7 @@ export class StudentService {
 
     async createStudent(createStudentDto: CreateStudentDto) {
 
-        const {school_id, classroom_id, level, ...remain} = createStudentDto
+        const {school_id, classroom_id, department_id, speciality_id, ...remain} = createStudentDto
 
         const checkStudent = (await this.studentModel.findOne({email: remain.email})) ||
             (await this.studentModel.findOne({phone_number: remain.phone_number}));
@@ -41,7 +41,9 @@ export class StudentService {
         const createdStudent = await new this.studentModel({
                 ...remain,
                 school: school_id,
-                classroom: classroom_id
+                classroom: classroom_id,
+                department: department_id,
+                speciality: speciality_id
             }
         ).save();
 

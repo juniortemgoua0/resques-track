@@ -17,8 +17,10 @@ export class PersonnelService {
     ) {
     }
 
-    getAllPersonnel() {
-        return this.personnelModel.find().populate(['department'])
+    getAllPersonnel(schoolId: string) {
+        return this.personnelModel.find()
+            .where({school:schoolId})
+            .populate(['school'])
     }
 
     getOnePersonnel(personnelId: string) {
@@ -27,27 +29,20 @@ export class PersonnelService {
 
     async createPersonnel(createPersonnelDto: CreatePersonnelDto) {
 
-        const {department_id, school_id, role_id, ...remain} = createPersonnelDto;
+        const {school_id, role_id, ...remain} = createPersonnelDto;
 
-        const checkStudent = (await this.personnelModel.findOne({email: remain.email})) ||
+        const checkPersonnel = (await this.personnelModel.findOne({email: remain.email})) ||
             (await this.personnelModel.findOne({phone_number: remain.phone_number}));
 
-        if (checkStudent) {
+        if (checkPersonnel) {
             throw new HttpException("email or phone_number taken", HttpStatus.UNAUTHORIZED);
         }
 
         const newPersonnel = await new this.personnelModel({
             ...remain,
             school: school_id,
-            department: department_id,
             role: role_id
         }).save();
-
-        await this.departmentModel.findByIdAndUpdate(
-            department_id,
-            {$push: {personnel: newPersonnel}},
-            {new: true, upsert: true}
-        );
 
         await this.schoolModel.findByIdAndUpdate(
             school_id,

@@ -9,5 +9,8 @@ export enum ModelName {
     REQUEST = "request",
     LEVEL = "level",
     PERSONNEL = "personnel",
-    ROLE = "role"
+    ROLE = "role",
+    CLAIM = "claim",
+    LETTER = "letter",
+    DOCUMENT= "document"
 }

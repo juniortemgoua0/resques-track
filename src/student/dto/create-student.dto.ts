@@ -41,7 +41,7 @@ export class CreateStudentDto {
     @IsNotEmpty()
     speciality_id: string
 
-    @IsString()
-    @IsNotEmpty()
-    level: string
+    // @IsString()
+    // @IsNotEmpty()
+    // level: string
 }

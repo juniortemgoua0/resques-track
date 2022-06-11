@@ -1,6 +1,5 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Document} from "mongoose";
-import {IsInt, IsNotEmpty, IsString} from "class-validator";
 import * as mongoose from "mongoose";
 import {ModelName} from "../../helpers";
 import {Department} from "../../department/department.schema";
@@ -27,14 +26,11 @@ export class Personnel {
     @Prop({required: true})
     phone_number: number;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.DEPARTMENT})
-    department: Department
-
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SCHOOL})
     school: School
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.ROLE})
-    role: Role
+    @Prop({required:true})
+    role: string
 
 }
 

@@ -62,7 +62,7 @@ export class AuthService {
             (await this.personnelModel.findOne({phone_number: username}).where({school: school_id}));
         if(checkPersonnel){
             return {
-                role: checkPersonnel['role'].name,
+                role: checkPersonnel['role'],
                 data: checkPersonnel
             }
         }
@@ -81,6 +81,12 @@ export class AuthService {
             (await this.userModel.findOne({phone_number: phone_number}));
         if (checkUser) {
             throw new HttpException("Email or phone_number taken", HttpStatus.UNAUTHORIZED);
+        }
+
+        const checkStudent = (await this.studentModel.findOne({email: email})) ||
+            (await this.studentModel.findOne({phone_number: phone_number}));
+        if (!checkStudent) {
+            throw new HttpException("This users information are not corresponds to any register student or personnel  into our system ", HttpStatus.UNAUTHORIZED);
         }
 
         const salt = await bcrypt.genSalt()

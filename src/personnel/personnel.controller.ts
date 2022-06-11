@@ -8,14 +8,14 @@ export class PersonnelController {
     constructor(private personnelService: PersonnelService) {
     }
 
-    @Get('')
-    getAllPersonnel(){
-        return this.personnelService.getAllPersonnel()
-    }
-
     @Get(':personnelId')
     getOnePersonnel(@Param('personnelId') personnelId: string) {
         return this.personnelService.getOnePersonnel(personnelId);
+    }
+
+    @Get('school/:schoolId')
+    getAllPersonnel(@Param('schoolId') schoolId: string) {
+        return this.personnelService.getAllPersonnel(schoolId)
     }
 
     @Post('')
@@ -28,11 +28,11 @@ export class PersonnelController {
         @Body() updatePersonnelDto: UpdatePersonnelDto,
         @Param('personnelId') personnelId: string
     ) {
-        return this.personnelService.updatePersonnel(personnelId , updatePersonnelDto);
+        return this.personnelService.updatePersonnel(personnelId, updatePersonnelDto);
     }
 
     @Delete(':personnelId')
-    deletePersonnel(@Param('personnelId') personnelId : string ){
+    deletePersonnel(@Param('personnelId') personnelId: string) {
         return this.personnelService.deletePersonnel(personnelId)
     }
 }
