@@ -14,17 +14,16 @@ export class UserService {
     }
 
     getAllUsers() {
-        return this.userModel.find().populate(["student"]).exec();
+        return this.userModel.find().populate(["student", "personnel"]).exec();
     }
 
     getOneUser(userId: string) {
-        return this.userModel.findById(userId).populate(["student"]).exec();
+        return this.userModel.findById(userId).populate(["student", "personnel"]).exec();
     }
 
     updateUser(userId: string, updateUserDto: UpdateUserDto) {
 
     }
-
 
     deleteUser(userId: string) {
         return this.userModel.findByIdAndDelete(userId);

@@ -14,12 +14,11 @@ export class AuthController {
         return this.authService.checkUsername(checkUsernameDto);
     }
 
-    @Post('signUp/:studentId')
+    @Post('signUp')
     signUp(
-        @Param('studentId') studentId: string,
         @Body() signUpDto: SignUpDto
     ) {
-        return this.authService.signUp(studentId, signUpDto);
+        return this.authService.signUp(signUpDto);
     }
 
     @UseGuards(LocalAuthGuard)

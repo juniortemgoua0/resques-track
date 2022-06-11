@@ -4,15 +4,22 @@ export class SignUpDto{
 
     @IsNotEmpty()
     @IsString()
-    email: string
+    email: string;
 
     @IsNotEmpty()
     @IsString()
-    phone_number: string
+    phone_number: string;
 
     @IsNotEmpty()
     @IsString()
     @MinLength(6)
-    password: string
+    password: string;
 
+    @IsString()
+    @IsNotEmpty()
+    user_status: string;
+
+    @IsString()
+    @IsNotEmpty()
+    current_user_id: string;
 }

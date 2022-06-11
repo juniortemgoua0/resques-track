@@ -24,7 +24,7 @@ export class Personnel {
     email: string;
 
     @Prop({required: true})
-    phone_number: number;
+    phone_number: string;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SCHOOL})
     school: School

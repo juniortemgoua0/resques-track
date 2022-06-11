@@ -40,7 +40,7 @@ export class AuthService {
             (await this.userModel.findOne({phone_number: username}));
         if (checkUser) {
             return {
-                role: UserStatusType.USER,
+                status: UserStatusType.USER,
                 data: checkUser
             }
         }
@@ -53,52 +53,65 @@ export class AuthService {
             (await this.studentModel.findOne({phone_number: username}).where({school: school_id}));
         if (checkStudent) {
             return {
-                role: UserStatusType.STUDENT,
+                status: UserStatusType.STUDENT,
                 data: checkStudent
             }
         }
 
         const checkPersonnel = (await this.personnelModel.findOne({email: username}).where({school: school_id})) ||
             (await this.personnelModel.findOne({phone_number: username}).where({school: school_id}));
-        if(checkPersonnel){
+        if (checkPersonnel) {
             return {
-                role: checkPersonnel['role'],
+                status: UserStatusType.PERSONNEL,
                 data: checkPersonnel
             }
         }
         throw new HttpException("This user is not register into our system ", HttpStatus.NOT_FOUND);
     }
 
-    async signUp(studentId: string, signUpDto: SignUpDto) {
+    async signUp(signUpDto: SignUpDto) {
 
-        const {email, phone_number, password} = signUpDto;
+        const {email, phone_number, password, current_user_id, user_status} = signUpDto;
 
         /*
         * We are checking if this email or password is already use by another user
         * then throw error if is that the case and return the new user if is not 
         * */
-        const checkUser = (await this.userModel.findOne({email: email})) ||
-            (await this.userModel.findOne({phone_number: phone_number}));
+        const checkUser = (await this.userModel.findOne({email})) ||
+            (await this.userModel.findOne({phone_number}));
         if (checkUser) {
             throw new HttpException("Email or phone_number taken", HttpStatus.UNAUTHORIZED);
         }
 
         const checkStudent = (await this.studentModel.findOne({email: email})) ||
             (await this.studentModel.findOne({phone_number: phone_number}));
-        if (!checkStudent) {
+
+        const checkPersonnel = (await this.personnelModel.findOne({email: email})) ||
+            (await this.personnelModel.findOne({phone_number: phone_number}));
+
+        if (!checkStudent && !checkPersonnel) {
             throw new HttpException("This users information are not corresponds to any register student or personnel  into our system ", HttpStatus.UNAUTHORIZED);
         }
 
         const salt = await bcrypt.genSalt()
         const hashPassword = await bcrypt.hash(password, salt);
 
-        const newUser = new this.userModel({
-            ...signUpDto,
-            password: hashPassword,
-            student: studentId
-        })
+        if (user_status === UserStatusType.STUDENT) {
 
-        return newUser.save();
+            return new this.userModel({
+                ...signUpDto,
+                password: hashPassword,
+                student: current_user_id
+            }).save
+
+        } else if (user_status === UserStatusType.PERSONNEL) {
+
+            return new this.userModel({
+                ...signUpDto,
+                password: hashPassword,
+                personnel: current_user_id,
+            }).save()
+        }
     }
 
     signIn(user: any) {
@@ -119,6 +132,5 @@ export class AuthService {
             }
         }
         return null
-
     }
 }
