@@ -2,7 +2,7 @@ import mongoose, {Document} from "mongoose";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Classroom} from "../classroom/classroom.schema";
 import {School} from "../school/school.schema";
-import {ModelName} from "../helpers";
+import {ModelName, Role} from "../helpers";
 import {Department} from "../department/department.schema";
 import {Speciality} from "../speciality/speciality.schema";
 
@@ -12,15 +12,15 @@ export type StudentDocument = Student & Document
 export class Student {
 
     @Prop({required: true})
-    registration_number:string;
+    registration_number: string;
 
     @Prop({required: true})
     last_name: string;
 
-    @Prop({ required: true})
+    @Prop({required: true})
     first_name: string;
 
-    @Prop({ required: true})
+    @Prop({required: true})
     email: string;
 
     @Prop({required: true})
@@ -37,6 +37,8 @@ export class Student {
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.DEPARTMENT})
     department: Department;
+
+
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student)

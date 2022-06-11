@@ -20,11 +20,11 @@ export class StudentService {
     }
 
     getAllStudents() {
-        return this.studentModel.find().populate(["classroom", "school"]).exec();
+        return this.studentModel.find().populate(["classroom", "school", "speciality", "department"]).exec();
     }
 
     getOneStudent(studentId: string) {
-        return this.studentModel.findById(studentId).populate(["classroom", "school"]).exec();
+        return this.studentModel.findById(studentId).populate(["classroom", "school","speciality", "department"]).exec();
     }
 
     async createStudent(createStudentDto: CreateStudentDto) {

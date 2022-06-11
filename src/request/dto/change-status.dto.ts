@@ -1,15 +1,14 @@
-import {IsNotEmpty, IsNumber, IsObject} from "class-validator";
+import {IsNotEmpty, IsNumber, IsObject, IsString} from "class-validator";
 import {IAssign} from "../interface";
 import {IReject} from "../interface/IReject";
 
 export class ChangeStatusDto {
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    status: number
+    status: string
 
     @IsNumber()
     @IsNotEmpty()
     request_step: number
-
 }

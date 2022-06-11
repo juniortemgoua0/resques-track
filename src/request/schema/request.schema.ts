@@ -2,8 +2,8 @@
 import {Schema, Prop, SchemaFactory} from "@nestjs/mongoose";
 import {Course} from "src/course/course.schema";
 import {Student} from '../../student/student.schema';
-import {ModelName, RequestStatus} from '../../helpers';
-import {IDocument, ILetter, ITreat} from "../interface"
+import {ModelName, RequestStatus, RequestStep} from '../../helpers';
+import {IAccept, IDocument, ILetter, ITreat} from "../interface"
 import mongoose, {Document} from "mongoose";
 import {IAssign} from "../interface";
 import {IReject} from "../interface/IReject";
@@ -35,19 +35,22 @@ export class Request {
     documents: IDocument<string>[];
 
     @Prop({required: false, default: RequestStatus.DRAFT})
-    status: number;
+    status: string;
 
-    @Prop({default: 1})
+    @Prop({required: false, default: RequestStep.STEP_1})
     request_step: number;
 
-    @Prop({required: false , default: {}})
+    @Prop({type: IAssign, required: false, default: {}})
     assign: IAssign;
 
-    @Prop({required: false, default: {}})
+    @Prop({type: IReject, required: false, default: {}})
     reject: IReject;
 
-    @Prop({required: false, default: {}})
+    @Prop({type: ITreat, required: false, default: {}})
     treat: ITreat;
+
+    @Prop({type: IAccept, required: false, default: {}})
+    accept: IAccept;
 }
 
 export const RequestSchema = SchemaFactory.createForClass(Request);

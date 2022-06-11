@@ -10,6 +10,9 @@ export class DocumentR{
     name: string;
 
     @Prop({required: true})
+    description: string;
+
+    @Prop({required: true})
     file: string;
 }
 

@@ -7,7 +7,7 @@ import {StudentDocument} from "../student/student.schema";
 import {UserService} from "../user/user.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-import {ModelName} from "../helpers";
+import {ModelName, Role} from "../helpers";
 import {PersonnelDocument} from "../personnel/schema/personnel.schema";
 
 export enum UserStatusType {
@@ -101,21 +101,26 @@ export class AuthService {
             return new this.userModel({
                 ...signUpDto,
                 password: hashPassword,
-                student: current_user_id
+                student: current_user_id,
+                role: Role.STUDENT
             }).save
 
         } else if (user_status === UserStatusType.PERSONNEL) {
+
+            // let role;
+            // checkPersonnel.then(res => role = res)
 
             return new this.userModel({
                 ...signUpDto,
                 password: hashPassword,
                 personnel: current_user_id,
+                role: ""
             }).save()
         }
     }
 
     signIn(user: any) {
-        const payload = {username: user.email, sub: user._id}
+        const payload = {role: user?.role, sub: user}
         return {
             access_token: this.jwtService.sign(payload)
         }

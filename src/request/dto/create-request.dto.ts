@@ -30,7 +30,7 @@ export class CreateRequestDto {
     @IsArray()
     documents: IDocument<string>[];
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    status: number;
+    submit_state: string;
 }

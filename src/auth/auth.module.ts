@@ -1,15 +1,16 @@
-import {Module} from '@nestjs/common';
+import {Global, Module} from '@nestjs/common';
 import {AuthController} from './auth.controller';
 import {AuthService} from './auth.service';
 import {JwtModule} from "@nestjs/jwt";
 import {PassportModule} from "@nestjs/passport";
-import {LocalStrategy} from "../security/local.strategy";
-import {LocalAuthGuard} from "../security/local-auth.guard";
-import {JwtAuthGuard} from "../security/jwt-auth.guard";
-import {JwtStrategy} from "../security/jwt.strategy";
+import {LocalStrategy} from "./security/local.strategy";
+import {LocalAuthGuard} from "./security/local-auth.guard";
+import {JwtAuthGuard} from "./security/jwt-auth.guard";
+import {JwtStrategy} from "./security/jwt.strategy";
 import {ConfigModule} from "@nestjs/config";
+import {RolesGuard} from "./security/roles.guard";
 
-
+@Global()
 @Module({
     imports: [
         PassportModule,
@@ -19,8 +20,9 @@ import {ConfigModule} from "@nestjs/config";
             signOptions: {expiresIn: "1d"}
         }),
     ],
+    exports: [RolesGuard, JwtAuthGuard],
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, LocalAuthGuard, JwtAuthGuard, JwtStrategy]
+    providers: [AuthService, LocalStrategy, LocalAuthGuard, JwtAuthGuard, JwtStrategy, RolesGuard]
 })
 export class AuthModule {
 }
