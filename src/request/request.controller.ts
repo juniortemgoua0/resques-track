@@ -1,8 +1,18 @@
 /* eslint-disable prettier/prettier */
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards} from '@nestjs/common';
 import {RequestService} from "./request.service";
-import {AssignRequestDto, ChangeStatusDto, RejectRequestDto, TreatRequestDto, UpdateRequestDto} from './dto';
-import {CreateRequestDto} from './dto';
+import {
+    AssignRequestDto,
+    ChangeStatusDto,
+    CreateRequestDto,
+    RejectRequestDto,
+    TreatRequestDto,
+    UpdateRequestDto
+} from './dto';
+import {Roles} from "../auth/decorators/roles.decorator";
+import {Role} from "../helpers";
+import {JwtAuthGuard} from "../auth/security/jwt-auth.guard";
+import {RolesGuard} from "../auth/security/roles.guard";
 
 @Controller('request')
 export class RequestController {
@@ -44,7 +54,8 @@ export class RequestController {
 
     /*
     * Assign request operation*/
-
+    @Roles(Role.HEAD_OF_DEPARTMENT)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Post('assign/:requestId')
     assignRequestToTeacher(
         @Param('requestId') requestId: string,
@@ -53,11 +64,15 @@ export class RequestController {
         return this.requestService.assignRequestToTeacher(requestId, assignRequestDto)
     }
 
+    @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Get('assign/:schoolId')
     getAllAssignRequests(@Param('schoolId') schoolId: string) {
         return this.requestService.getAllAssignRequests(schoolId)
     }
 
+    @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Get('assign/teacher/:teacherId')
     getTeacherAssignRequests(@Param('teacherId') teacherId: string) {
         return this.requestService.getTeacherAssignRequests(teacherId)
@@ -70,6 +85,8 @@ export class RequestController {
 
     /*
     * Start request treatment operation*/
+    @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Post('treat/:requestId')
     treatRequest(
         @Param('requestId') requestId: string,
@@ -78,18 +95,23 @@ export class RequestController {
         return this.requestService.treatRequest(requestId, treatRequestDto);
     }
 
+    @Roles(Role.HEAD_OF_DEPARTMENT)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Put('treat/validate/:requestId')
     validateTreatRequest(
         @Param('requestId') requestId: string,
     ) {
         return this.requestService.validateTreatRequest(requestId);
     }
+
     /*
     * End treatment*/
 
 
     /*
     * Start request deliberation operation*/
+    @Roles(Role.HEAD_OF_DEPARTMENT)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Put('deliberate/:requestId')
     deliberateTreatRequest(
         @Param('requestId') requestId: string,
@@ -102,18 +124,23 @@ export class RequestController {
 
     /*
     * Start request publishing operation*/
+    @Roles(Role.EXECUTIVE_OFFICER)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Put('publishing/:requestId')
     publishingRequest(
         @Param('requestId') requestId: string,
     ) {
         return this.requestService.publishingRequest(requestId);
     }
+
     /*
    * End publishing*/
 
 
     /*
      * Start request reject operation*/
+    @Roles(Role.SECRETARY)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Post('reject/:requestId')
     rejectRequest(
         @Param('requestId') requestId: string,
@@ -128,20 +155,26 @@ export class RequestController {
 
     /*
      * Start request accept operation*/
+    @Roles(Role.SECRETARY)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Put('accept/:requestId')
     acceptRequest(
         @Param('requestId') requestId: string,
     ) {
         return this.requestService.acceptRequest(requestId);
     }
+
     /*
     * End accept*/
-
+    @Roles(Role.STUDENT)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Post('')
     createRequest(@Body() createRequestDto: CreateRequestDto) {
         return this.requestService.createStudentRequest(createRequestDto)
     }
 
+    @Roles(Role.STUDENT)
+    @UseGuards( JwtAuthGuard, RolesGuard )
     @Put(':requestId')
     updateRequest(
         @Param('requestId') requestId: string,
@@ -150,6 +183,8 @@ export class RequestController {
         return this.requestService.updateStudentRequest(requestId, updateRequestDto);
     }
 
+    @Roles(Role.STUDENT)
+    @UseGuards(JwtAuthGuard , RolesGuard)
     @Delete(':requestId')
     deleteSpeciality(@Param('requestId') requestId: string) {
         return this.requestService.deleteRequest(requestId);

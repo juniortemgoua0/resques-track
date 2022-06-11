@@ -24,7 +24,7 @@ export class User {
     @Prop({default: ""})
     signature: string;
 
-    @Prop({required: false})
+    @Prop({required: true})
     role: string;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.STUDENT})

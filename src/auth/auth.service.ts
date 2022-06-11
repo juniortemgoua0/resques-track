@@ -86,8 +86,9 @@ export class AuthService {
         const checkStudent = (await this.studentModel.findOne({email: email})) ||
             (await this.studentModel.findOne({phone_number: phone_number}));
 
-        const checkPersonnel = (await this.personnelModel.findOne({email: email})) ||
-            (await this.personnelModel.findOne({phone_number: phone_number}));
+        let role;
+        const checkPersonnel = (await this.personnelModel.findOne({email: email}).then(res => role = res?.role)) ||
+            (await this.personnelModel.findOne({phone_number: phone_number}).then(res => role = res?.role));
 
         if (!checkStudent && !checkPersonnel) {
             throw new HttpException("This users information are not corresponds to any register student or personnel  into our system ", HttpStatus.UNAUTHORIZED);
@@ -103,18 +104,15 @@ export class AuthService {
                 password: hashPassword,
                 student: current_user_id,
                 role: Role.STUDENT
-            }).save
+            }).save()
 
         } else if (user_status === UserStatusType.PERSONNEL) {
-
-            // let role;
-            // checkPersonnel.then(res => role = res)
 
             return new this.userModel({
                 ...signUpDto,
                 password: hashPassword,
                 personnel: current_user_id,
-                role: ""
+                role: role
             }).save()
         }
     }
