@@ -29,6 +29,9 @@ export class Personnel {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SCHOOL})
     school: School
 
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.DEPARTMENT})
+    department: Department
+
     @Prop({required:true})
     role: string
 

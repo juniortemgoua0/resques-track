@@ -47,7 +47,7 @@ export class RequestService {
                 console.log(Role.STUDENT)
                 return this.requestModel.find()
                     .where({student: sub.student})
-                    .populate(['course', 'student','supporting_documents', 'claim'])
+                    .populate(['course', 'student', 'supporting_documents', 'claim'])
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
@@ -60,10 +60,15 @@ export class RequestService {
                 let department: string;
                 await this.departmentModel.findOne()
                     .where({head_of_department: sub.personnel})
-                    .then(res => department = res._id);
+                    .then(res => department = res._id.toString());
 
-                await this.requestModel.find()
-                    .where({status: RequestStatus.TREATMENT_PENDING})
+                await this.requestModel.find({
+                    $or: [{status: RequestStatus.TREATMENT_PENDING},
+                        {status: RequestStatus.TREATMENT_IN_PROGRESS},
+                        {status: RequestStatus.TREATMENT_AT_VERIFY},
+                        {status: RequestStatus.TREATMENT_ASSIGNED},
+                        {status: RequestStatus.DELIBERATION_PENDING}]
+                })
                     .populate(['course', 'student', 'supporting_documents', 'claim'])
                     .then(res => res.filter(r => r.student.department.toString() === department))
                     .then(res => result = res);

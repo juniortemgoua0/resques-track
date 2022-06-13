@@ -7,7 +7,7 @@ export class AssignRequestDto{
     teacher_id: string;
 
     @IsNotEmpty()
-    date: Date
+    limit_date: string;
 
     @IsString()
     description: string;

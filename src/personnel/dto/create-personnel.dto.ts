@@ -31,4 +31,8 @@ export class CreatePersonnelDto {
     @IsNotEmpty()
     role: string;
 
+    @IsString()
+    @IsNotEmpty()
+    department_id: string;
+
 }

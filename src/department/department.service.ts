@@ -10,17 +10,17 @@ import {SchoolDocument} from "../school/school.schema";
 export class DepartmentService {
 
     constructor(
-        @InjectModel(ModelName.DEPARTMENT) private  departmentModel: Model<DepartmentDocument>,
+        @InjectModel(ModelName.DEPARTMENT) private departmentModel: Model<DepartmentDocument>,
         @InjectModel(ModelName.SCHOOL) private schoolModel: Model<SchoolDocument>
     ) {
     }
 
     getAllDepartments() {
-        return this.departmentModel.find().populate(["school", "specialities"]).exec();
+        return this.departmentModel.find().populate(["school", "specialities", "head_of_department"]).exec();
     }
 
     getOneDepartment(departmentId: string) {
-        return this.departmentModel.findById(departmentId).populate(["school", "specialities"]).exec();
+        return this.departmentModel.findById(departmentId).populate(["school", "specialities", "head_of_department"]).exec();
     }
 
     async createDepartment(createDepartmentDto: CreateDepartmentDto) {
@@ -47,7 +47,7 @@ export class DepartmentService {
 
     async updateDepartment(departmentId: string, updateDepartmentDto: UpdateDepartmentDto) {
 
-        const {school_id , ...remain} = updateDepartmentDto;
+        const {school_id, ...remain} = updateDepartmentDto;
 
         const checkDepartment = await this.departmentModel.findOne({name: remain.name});
         if (checkDepartment) {
@@ -56,8 +56,8 @@ export class DepartmentService {
 
         return this.departmentModel.findByIdAndUpdate(
             departmentId,
-            {$set : {...remain , school: school_id}},
-            {new : true , upsert: true}
+            {$set: {...remain, school: school_id}},
+            {new: true, upsert: true}
         )
     }
 
