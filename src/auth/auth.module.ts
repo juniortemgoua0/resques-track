@@ -3,12 +3,12 @@ import {AuthController} from './auth.controller';
 import {AuthService} from './auth.service';
 import {JwtModule} from "@nestjs/jwt";
 import {PassportModule} from "@nestjs/passport";
-import {LocalStrategy} from "./security/local.strategy";
-import {LocalAuthGuard} from "./security/local-auth.guard";
-import {JwtAuthGuard} from "./security/jwt-auth.guard";
-import {JwtStrategy} from "./security/jwt.strategy";
+import {LocalStrategy} from "./security/strategy/local.strategy";
+import {LocalAuthGuard} from "./security/guard/local-auth.guard";
+import {JwtAuthGuard} from "./security/guard/jwt-auth.guard";
+import {JwtStrategy} from "./security/strategy/jwt.strategy";
 import {ConfigModule} from "@nestjs/config";
-import {RolesGuard} from "./security/roles.guard";
+import {RolesGuard} from "./security/guard/roles.guard";
 
 @Global()
 @Module({

@@ -5,9 +5,13 @@ export class UpdateDepartmentDto{
 
     @IsNotEmpty()
     @IsString()
-    name:string
+    name:string;
 
     @IsString()
     @IsNotEmpty()
-    school_id: string
+    school_id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    head_of_department: string;
 }

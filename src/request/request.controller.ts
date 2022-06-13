@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Request, UseGuards} from '@nestjs/common';
 import {RequestService} from "./request.service";
 import {
     AssignRequestDto,
@@ -11,8 +11,8 @@ import {
 } from './dto';
 import {Roles} from "../auth/decorators/roles.decorator";
 import {Role} from "../helpers";
-import {JwtAuthGuard} from "../auth/security/jwt-auth.guard";
-import {RolesGuard} from "../auth/security/roles.guard";
+import {JwtAuthGuard} from "../auth/security/guard/jwt-auth.guard";
+import {RolesGuard} from "../auth/security/guard/roles.guard";
 
 @Controller('request')
 export class RequestController {
@@ -20,9 +20,16 @@ export class RequestController {
     constructor(private requestService: RequestService) {
     }
 
+    // @Get('')
+    // getAllRequests() {
+    //     return this.requestService.getAllRequests();
+    // }
+
+    @Roles(Role.STUDENT , Role.SECRETARY, Role.EXECUTIVE_OFFICER, Role.HEAD_OF_DEPARTMENT , Role.TEACHER, Role.IT_OFFICER)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('')
-    getAllRequests() {
-        return this.requestService.getAllRequests();
+    getUsersCorrespondRequest(@Request() req: any){
+        return this.requestService.getUsersCorrespondRequest(req.user);
     }
 
     @Get(':studentId')
@@ -35,10 +42,8 @@ export class RequestController {
         return this.requestService.getRequestsBySchool(schoolId)
     }
 
-
     /*
     * Status operation on request*/
-
     @Get('status/:status')
     getRequestsByStatus(@Param('status', ParseIntPipe) status: number) {
         return this.requestService.getRequestsByStatus(status)
@@ -55,7 +60,7 @@ export class RequestController {
     /*
     * Assign request operation*/
     @Roles(Role.HEAD_OF_DEPARTMENT)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('assign/:requestId')
     assignRequestToTeacher(
         @Param('requestId') requestId: string,
@@ -64,20 +69,17 @@ export class RequestController {
         return this.requestService.assignRequestToTeacher(requestId, assignRequestDto)
     }
 
-    @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
-    @UseGuards( JwtAuthGuard, RolesGuard )
     @Get('assign/:schoolId')
     getAllAssignRequests(@Param('schoolId') schoolId: string) {
         return this.requestService.getAllAssignRequests(schoolId)
     }
 
     @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('assign/teacher/:teacherId')
     getTeacherAssignRequests(@Param('teacherId') teacherId: string) {
         return this.requestService.getTeacherAssignRequests(teacherId)
     }
-
 
     /*
     * End assign*/
@@ -86,7 +88,7 @@ export class RequestController {
     /*
     * Start request treatment operation*/
     @Roles(Role.HEAD_OF_DEPARTMENT, Role.TEACHER)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('treat/:requestId')
     treatRequest(
         @Param('requestId') requestId: string,
@@ -96,7 +98,7 @@ export class RequestController {
     }
 
     @Roles(Role.HEAD_OF_DEPARTMENT)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('treat/validate/:requestId')
     validateTreatRequest(
         @Param('requestId') requestId: string,
@@ -111,7 +113,7 @@ export class RequestController {
     /*
     * Start request deliberation operation*/
     @Roles(Role.HEAD_OF_DEPARTMENT)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('deliberate/:requestId')
     deliberateTreatRequest(
         @Param('requestId') requestId: string,
@@ -119,20 +121,19 @@ export class RequestController {
         return this.requestService.deliberateTreatRequest(requestId);
     }
     /*
-   * End treatment*/
+   * End deliberation*/
 
 
     /*
     * Start request publishing operation*/
     @Roles(Role.EXECUTIVE_OFFICER)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('publishing/:requestId')
     publishingRequest(
         @Param('requestId') requestId: string,
     ) {
         return this.requestService.publishingRequest(requestId);
     }
-
     /*
    * End publishing*/
 
@@ -140,13 +141,14 @@ export class RequestController {
     /*
      * Start request reject operation*/
     @Roles(Role.SECRETARY)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('reject/:requestId')
     rejectRequest(
         @Param('requestId') requestId: string,
-        @Body() rejectRequestDto: RejectRequestDto
+        @Body() rejectRequestDto: RejectRequestDto,
+        @Request() req: any
     ) {
-        return this.requestService.rejectRequest(requestId, rejectRequestDto);
+        return this.requestService.rejectRequest(requestId, rejectRequestDto, req.user);
     }
 
     /*
@@ -156,7 +158,7 @@ export class RequestController {
     /*
      * Start request accept operation*/
     @Roles(Role.SECRETARY)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('accept/:requestId')
     acceptRequest(
         @Param('requestId') requestId: string,
@@ -167,14 +169,14 @@ export class RequestController {
     /*
     * End accept*/
     @Roles(Role.STUDENT)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Post('')
     createRequest(@Body() createRequestDto: CreateRequestDto) {
         return this.requestService.createStudentRequest(createRequestDto)
     }
 
     @Roles(Role.STUDENT)
-    @UseGuards( JwtAuthGuard, RolesGuard )
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put(':requestId')
     updateRequest(
         @Param('requestId') requestId: string,
@@ -184,9 +186,10 @@ export class RequestController {
     }
 
     @Roles(Role.STUDENT)
-    @UseGuards(JwtAuthGuard , RolesGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':requestId')
     deleteSpeciality(@Param('requestId') requestId: string) {
         return this.requestService.deleteRequest(requestId);
     }
+
 }

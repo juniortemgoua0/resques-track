@@ -11,7 +11,6 @@ export class TreatRequestDto{
     final_note: number;
 
     @IsString()
-    @IsNotEmpty()
     description: string;
 
 }

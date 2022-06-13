@@ -29,7 +29,7 @@ export class PersonnelService {
 
     async createPersonnel(createPersonnelDto: CreatePersonnelDto) {
 
-        const {school_id, role_id, ...remain} = createPersonnelDto;
+        const {school_id, ...remain} = createPersonnelDto;
 
         const checkPersonnel = (await this.personnelModel.findOne({email: remain.email})) ||
             (await this.personnelModel.findOne({phone_number: remain.phone_number}));
@@ -41,7 +41,6 @@ export class PersonnelService {
         const newPersonnel = await new this.personnelModel({
             ...remain,
             school: school_id,
-            role: role_id
         }).save();
 
         await this.schoolModel.findByIdAndUpdate(

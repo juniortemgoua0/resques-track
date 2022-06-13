@@ -10,7 +10,6 @@ export class AssignRequestDto{
     date: Date
 
     @IsString()
-    @IsNotEmpty()
     description: string;
 
 }

@@ -1,10 +1,10 @@
-import {IsInt, IsNotEmpty, IsString} from "class-validator";
+import {IsEmail, IsInt, IsNotEmpty, IsString} from "class-validator";
 
 export class UpdatePersonnelDto{
 
     @IsString()
     @IsNotEmpty()
-    registration_number:string;
+    registration_number: string;
 
     @IsString()
     @IsNotEmpty()
@@ -16,14 +16,19 @@ export class UpdatePersonnelDto{
 
     @IsString()
     @IsNotEmpty()
+    @IsEmail()
     email: string;
-
-    @IsInt()
-    @IsNotEmpty()
-    phone_number: number;
 
     @IsString()
     @IsNotEmpty()
-    department_id: string
+    phone_number: string;
+
+    @IsString()
+    @IsNotEmpty()
+    school_id: string;
+
+    @IsString()
+    @IsNotEmpty()
+    role: string;
 
 }

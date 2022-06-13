@@ -20,8 +20,8 @@ export class Department{
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId , ref: ModelName.SPECIALITY}] , default: []})
     specialities: Speciality[];
 
-    @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref:ModelName.PERSONNEL}]})
-    personnel: Personnel[]
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref:ModelName.PERSONNEL})
+    head_of_department: Personnel
 }
 
 export const DepartmentSchema = SchemaFactory.createForClass(Department)

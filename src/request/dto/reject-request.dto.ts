@@ -7,6 +7,5 @@ export class RejectRequestDto{
     reason: string;
 
     @IsString()
-    @IsNotEmpty()
     description: string;
 }

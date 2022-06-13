@@ -6,6 +6,6 @@ export class ILetter<T> {
 
     description?: string
 
-    file?: T
+    file?: T[]
 
 }

@@ -29,6 +29,6 @@ export class CreatePersonnelDto {
 
     @IsString()
     @IsNotEmpty()
-    role_id: string;
+    role: string;
 
 }

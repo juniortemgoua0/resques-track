@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName, RequestStatus, RequestStep, RequestSubmitState} from "../helpers";
+import {ModelName, RequestStatus, RequestStep, RequestSubmitState, Role} from "../helpers";
 import {Model} from "mongoose";
 import {RequestDocument} from "./schema/request.schema";
 import {StudentDocument} from '../student/student.schema';
@@ -18,6 +18,7 @@ import {DocumentDocument} from "./schema/document.schema";
 import {LetterDocument} from "./schema/letter.schema";
 import {SchoolDocument} from "../school/school.schema";
 import {PersonnelDocument} from "../personnel/schema/personnel.schema";
+import {DepartmentDocument} from "../department/department.schema";
 
 @Injectable()
 export class RequestService {
@@ -26,6 +27,7 @@ export class RequestService {
         @InjectModel(ModelName.REQUEST) private readonly requestModel: Model<RequestDocument>,
         @InjectModel(ModelName.STUDENT) private readonly studentModel: Model<StudentDocument>,
         @InjectModel(ModelName.SCHOOL) private readonly schoolModel: Model<SchoolDocument>,
+        @InjectModel(ModelName.DEPARTMENT) private readonly departmentModel: Model<DepartmentDocument>,
         @InjectModel(ModelName.PERSONNEL) private readonly personnelModel: Model<PersonnelDocument>,
         @InjectModel(ModelName.CLAIM) private readonly claimModel: Model<ClaimDocument>,
         @InjectModel(ModelName.DOCUMENT) private readonly documentModel: Model<DocumentDocument>,
@@ -34,9 +36,62 @@ export class RequestService {
     }
 
 
-    getAllRequests() {
-        return this.requestModel.find()
-            .populate(['course', 'student', 'letter', 'documents', 'claim']);
+    async getUsersCorrespondRequest(user: any) {
+
+        const {role, sub} = user
+
+        let school: string;
+        let result = [];
+        switch (role) {
+            case Role.STUDENT :
+                console.log(Role.STUDENT)
+                return this.requestModel.find()
+                    .where({student: sub.student})
+                    // .populate(['course', 'student', ]);
+
+            case Role.TEACHER:
+                console.log(Role.TEACHER)
+                return this.requestModel.find()
+                    .where({"assign.teacher_id": sub.personnel})
+                    // .populate(['course', 'student']);
+
+            case Role.HEAD_OF_DEPARTMENT:
+                console.log(Role.HEAD_OF_DEPARTMENT)
+                let department: string;
+                await this.departmentModel.findOne()
+                    .where({head_of_department: sub.personnel})
+                    .then(res => department = res._id);
+
+                await this.requestModel.find()
+                    .where({status: RequestStatus.TREATMENT_PENDING})
+                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .then(res => res.filter(r => r.student.department.toString() === department))
+                    .then(res => result = res);
+                return result;
+
+            case Role.SECRETARY:
+                console.log(Role.SECRETARY)
+                await this.personnelModel.findById(sub.personnel)
+                    .then(res => school = res.school.toString());
+
+                await this.requestModel.find()
+                    .where({status: RequestStatus.SUBMITTED})
+                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .then(res => res.filter(r => r.student.school.toString() === school))
+                    .then(res => result = res)
+                return result;
+
+            case Role.EXECUTIVE_OFFICER:
+                console.log(Role.EXECUTIVE_OFFICER)
+                await this.personnelModel.findById(sub.personnel)
+                    .then(res => school = res.school.toString());
+
+                await this.requestModel.find()
+                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .then(res => res.filter(r => r.student.school.toString() === school))
+                    .then(res => result = res)
+                return result;
+        }
     }
 
     getStudentRequests(studentId: string) {
@@ -59,7 +114,6 @@ export class RequestService {
             .then(res => result = res)
 
         return result;
-
     }
 
     getRequestsByStatus(status: number) {
@@ -76,8 +130,8 @@ export class RequestService {
 
         const documents = [];
         let i = 0;
-        if (remain.documents.length > 0) {
-            for (const document of remain.documents) {
+        if (remain.supporting_documents.length > 0) {
+            for (const document of remain.supporting_documents) {
                 documents[i] = await new this.documentModel(document)._id
                 i++
             }
@@ -224,12 +278,12 @@ export class RequestService {
         );
     }
 
-    rejectRequest(requestId: string, rejectRequestDto: RejectRequestDto) {
+    rejectRequest(requestId: string, rejectRequestDto: RejectRequestDto, user: any) {
         return this.requestModel.findByIdAndUpdate(
             requestId,
             {
                 $set: {
-                    reject: {...rejectRequestDto, date: new Date()},
+                    reject: {user: user.sub._id, ...rejectRequestDto, date: new Date()},
                     status: RequestStatus.REJECTED
                 }
             },

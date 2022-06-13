@@ -28,7 +28,7 @@ export class CreateRequestDto {
     letter: ILetter<string>;
 
     @IsArray()
-    documents: IDocument<string>[];
+    supporting_documents: IDocument<string>[];
 
     @IsString()
     @IsNotEmpty()

@@ -1,7 +1,7 @@
-import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
+import {CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
-import {Role} from "../../helpers";
-import {ROLE_KEY} from "../decorators/roles.decorator";
+import {Role} from "../../../helpers";
+import {ROLE_KEY} from "../../decorators/roles.decorator";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -22,9 +22,11 @@ export class RolesGuard implements CanActivate {
 
         const {user} = context.switchToHttp().getRequest()
 
-        console.log(user);
+        if (roles.some(role => user?.role?.includes(role))) {
+            return true
+        }
 
-        return roles.some(role => user?.role?.includes(role));
+        throw new HttpException("You don't have required privileges to access at this feature", HttpStatus.UNAUTHORIZED);
     }
 
 }
