@@ -34,7 +34,7 @@ export class Request {
     letter: ILetter<string>;
 
     @Prop({required: false})
-    submit_date: Date;
+    submit_date: string;
 
     @Prop({default: []})
     supporting_documents: IDocument<string>[];

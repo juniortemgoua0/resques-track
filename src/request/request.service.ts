@@ -47,13 +47,13 @@ export class RequestService {
                 console.log(Role.STUDENT)
                 return this.requestModel.find()
                     .where({student: sub.student})
-            // .populate(['course', 'student', ]);
+                    .populate(['course', 'student','documents', 'claim'])
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
                 return this.requestModel.find()
                     .where({"assign.teacher_id": sub.personnel})
-            // .populate(['course', 'student']);
+                    .populate(['course', 'student', 'documents', 'claim'])
 
             case Role.HEAD_OF_DEPARTMENT:
                 console.log(Role.HEAD_OF_DEPARTMENT)
@@ -64,7 +64,7 @@ export class RequestService {
 
                 await this.requestModel.find()
                     .where({status: RequestStatus.TREATMENT_PENDING})
-                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .populate(['course', 'student', 'documents', 'claim'])
                     .then(res => res.filter(r => r.student.department.toString() === department))
                     .then(res => result = res);
                 return result;
@@ -76,7 +76,7 @@ export class RequestService {
 
                 await this.requestModel.find()
                     .where({status: RequestStatus.SUBMITTED})
-                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .populate(['course', 'student', 'documents', 'claim'])
                     .then(res => res.filter(r => r.student.school.toString() === school))
                     .then(res => result = res)
                 return result;
@@ -87,7 +87,7 @@ export class RequestService {
                     .then(res => school = res.school.toString());
 
                 await this.requestModel.find()
-                    .populate(['course', 'student', 'letter', 'documents', 'claim'])
+                    .populate(['course', 'student', 'documents', 'claim'])
                     .then(res => res.filter(r => r.student.school.toString() === school))
                     .then(res => result = res)
                 return result;
@@ -125,8 +125,6 @@ export class RequestService {
     async createStudentRequest(createRequestDto: CreateRequestDto) {
 
         const {student_id, claim_id, submit_state, course_id, letter, ...remain} = createRequestDto;
-
-        const newLetter = await new this.letterModel(letter).save()
 
         const documents = [];
         let i = 0;
