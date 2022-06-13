@@ -47,13 +47,13 @@ export class RequestService {
                 console.log(Role.STUDENT)
                 return this.requestModel.find()
                     .where({student: sub.student})
-                    .populate(['course', 'student','documents', 'claim'])
+                    .populate(['course', 'student','supporting_documents', 'claim'])
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
                 return this.requestModel.find()
                     .where({"assign.teacher_id": sub.personnel})
-                    .populate(['course', 'student', 'documents', 'claim'])
+                    .populate(['course', 'student', 'supporting_documents', 'claim'])
 
             case Role.HEAD_OF_DEPARTMENT:
                 console.log(Role.HEAD_OF_DEPARTMENT)
@@ -64,7 +64,7 @@ export class RequestService {
 
                 await this.requestModel.find()
                     .where({status: RequestStatus.TREATMENT_PENDING})
-                    .populate(['course', 'student', 'documents', 'claim'])
+                    .populate(['course', 'student', 'supporting_documents', 'claim'])
                     .then(res => res.filter(r => r.student.department.toString() === department))
                     .then(res => result = res);
                 return result;
@@ -76,7 +76,7 @@ export class RequestService {
 
                 await this.requestModel.find()
                     .where({status: RequestStatus.SUBMITTED})
-                    .populate(['course', 'student', 'documents', 'claim'])
+                    .populate(['course', 'student', 'supporting_documents', 'claim'])
                     .then(res => res.filter(r => r.student.school.toString() === school))
                     .then(res => result = res)
                 return result;
@@ -87,7 +87,7 @@ export class RequestService {
                     .then(res => school = res.school.toString());
 
                 await this.requestModel.find()
-                    .populate(['course', 'student', 'documents', 'claim'])
+                    .populate(['course', 'student', 'supporting_documents', 'claim'])
                     .then(res => res.filter(r => r.student.school.toString() === school))
                     .then(res => result = res)
                 return result;
@@ -96,7 +96,7 @@ export class RequestService {
 
     getStudentRequests(studentId: string) {
         return this.requestModel.findById(studentId)
-            .populate(['course', 'student', 'letter', 'documents', 'claim']);
+            .populate(['course', 'student', 'supporting_documents', 'claim']);
     }
 
     getOneRequest(RequestId: string) {
@@ -109,7 +109,7 @@ export class RequestService {
 
         let result = []
         await this.requestModel.find()
-            .populate(['course', 'student', 'letter', 'documents', 'claim'])
+            .populate(['course', 'student', 'claim'])
             .then(res => res.filter(r => r.student?.school?.toString() === schoolId))
             .then(res => result = res)
 
