@@ -7,6 +7,8 @@ import {IAccept, IDocument, ILetter, ITreat} from "../interface"
 import mongoose, {Document} from "mongoose";
 import {IAssign} from "../interface";
 import {IReject} from "../interface/IReject";
+import {IDeliberate} from "../interface/IDeliberate";
+import {IPublish} from "../interface/IPublish";
 
 export type RequestDocument = Request & Document;
 
@@ -28,11 +30,14 @@ export class Request {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.COURSE})
     course: Course;
 
-    @Prop({required: true})
+    @Prop({ type: ILetter, required: true})
     letter: ILetter<string>;
 
+    @Prop({required: false})
+    submit_date: Date;
+
     @Prop({default: []})
-    documents: IDocument<string>[];
+    supporting_documents: IDocument<string>[];
 
     @Prop({required: false, default: RequestStatus.DRAFT})
     status: string;
@@ -51,6 +56,12 @@ export class Request {
 
     @Prop({type: IAccept, required: false, default: {}})
     accept: IAccept;
+
+    @Prop({type: IDeliberate, required: false, default: {}})
+    deliberate: IDeliberate;
+
+    @Prop({type: IDeliberate, required: false, default: {}})
+    publish: IPublish;
 }
 
 export const RequestSchema = SchemaFactory.createForClass(Request);

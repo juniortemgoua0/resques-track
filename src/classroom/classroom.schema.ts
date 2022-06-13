@@ -14,6 +14,9 @@ export class Classroom {
     @Prop({required: true})
     name: string;
 
+    @Prop({required: true})
+    level: number;
+
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.SPECIALITY})
     speciality: Speciality;
 

@@ -83,12 +83,13 @@ export class AuthService {
             throw new HttpException("Email or phone_number taken", HttpStatus.UNAUTHORIZED);
         }
 
-        const checkStudent = (await this.studentModel.findOne({email: email})) ||
-            (await this.studentModel.findOne({phone_number: phone_number}));
+        let student;
+        const checkStudent = (await this.studentModel.findOne({email: email}).then(res => student = res)) ||
+            (await this.studentModel.findOne({phone_number: phone_number}).then(res => student = res));
 
-        let role;
-        const checkPersonnel = (await this.personnelModel.findOne({email: email}).then(res => role = res?.role)) ||
-            (await this.personnelModel.findOne({phone_number: phone_number}).then(res => role = res?.role));
+        let personnel;
+        const checkPersonnel = (await this.personnelModel.findOne({email: email}).then(res => personnel = res)) ||
+            (await this.personnelModel.findOne({phone_number: phone_number}).then(res => personnel = res));
 
         if (!checkStudent && !checkPersonnel) {
             throw new HttpException("This users information are not corresponds to any register student or personnel  into our system ", HttpStatus.UNAUTHORIZED);
@@ -103,7 +104,9 @@ export class AuthService {
                 ...signUpDto,
                 password: hashPassword,
                 student: current_user_id,
-                role: Role.STUDENT
+                role: Role.STUDENT,
+                first_name: student.first_name,
+                last_name: student.last_name
             }).save()
 
         } else if (user_status === UserStatusType.PERSONNEL) {
@@ -112,7 +115,9 @@ export class AuthService {
                 ...signUpDto,
                 password: hashPassword,
                 personnel: current_user_id,
-                role: role
+                role: personnel.role,
+                first_name: personnel.first_name,
+                last_name: personnel.last_name
             }).save()
         }
     }

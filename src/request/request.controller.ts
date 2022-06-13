@@ -25,6 +25,11 @@ export class RequestController {
     //     return this.requestService.getAllRequests();
     // }
 
+    @Get('claim')
+    getClaim(){
+        return this.requestService.getClaim();
+    }
+
     @Roles(Role.STUDENT , Role.SECRETARY, Role.EXECUTIVE_OFFICER, Role.HEAD_OF_DEPARTMENT , Role.TEACHER, Role.IT_OFFICER)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('')
@@ -37,7 +42,7 @@ export class RequestController {
         return this.requestService.getStudentRequests(studentId)
     }
 
-    @Get('/school/:schoolId')
+    @Get('school/:schoolId')
     getRequestsBySchool(@Param('schoolId') schoolId: string) {
         return this.requestService.getRequestsBySchool(schoolId)
     }

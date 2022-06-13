@@ -24,7 +24,6 @@ export class CreateRequestDto {
     @IsNotEmpty()
     claim_note: number;
 
-    @IsObject()
     letter: ILetter<string>;
 
     @IsArray()

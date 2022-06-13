@@ -47,13 +47,13 @@ export class RequestService {
                 console.log(Role.STUDENT)
                 return this.requestModel.find()
                     .where({student: sub.student})
-                    // .populate(['course', 'student', ]);
+            // .populate(['course', 'student', ]);
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
                 return this.requestModel.find()
                     .where({"assign.teacher_id": sub.personnel})
-                    // .populate(['course', 'student']);
+            // .populate(['course', 'student']);
 
             case Role.HEAD_OF_DEPARTMENT:
                 console.log(Role.HEAD_OF_DEPARTMENT)
@@ -145,7 +145,8 @@ export class RequestService {
             letter: letter,
             documents: documents,
             status: submit_state === RequestSubmitState.DRAFT ? RequestStatus.DRAFT : RequestStatus.SUBMITTED,
-            request_step: submit_state === RequestSubmitState.DRAFT ? RequestStep.STEP_1 : RequestStep.STEP_2
+            request_step: submit_state === RequestSubmitState.DRAFT ? RequestStep.STEP_1 : RequestStep.STEP_2,
+            submit_date: RequestSubmitState.SAVE ? new Date().toLocaleDateString() : "-",
         }).save();
 
         await this.studentModel.findByIdAndUpdate(
@@ -178,7 +179,7 @@ export class RequestService {
             requestId,
             {
                 $set: {
-                    assign: {...assignRequestDto, assign_date: new Date()},
+                    assign: {...assignRequestDto, assign_date: new Date().toLocaleDateString()},
                     status: RequestStatus.TREATMENT_ASSIGNED
                 }
             },
@@ -215,7 +216,7 @@ export class RequestService {
             requestId,
             {
                 $set: {
-                    treat: {...treatRequestDto, treat_date: new Date()},
+                    treat: {...treatRequestDto, treat_date: new Date().toLocaleDateString()},
                     status: RequestStatus.TREATMENT_AT_VERIFY
                 }
             },
@@ -241,6 +242,7 @@ export class RequestService {
             requestId,
             {
                 $set: {
+                    deliberate: {deliberate_date: new Date().toLocaleDateString()},
                     request_step: RequestStep.STEP_5,
                     status: RequestStatus.PUBLISHING_PENDING,
                 }
@@ -268,6 +270,7 @@ export class RequestService {
             requestId,
             {
                 $set: {
+                    publish: {publish_date: new Date().toLocaleDateString()},
                     request_step: RequestStep.STEP_6,
                     status: req?.treat?.final_note === req?.claim_note || req?.treat?.final_note > req?.dispute_note ?
                         RequestStatus.PUBLISHING_AND_SUCCESS :
@@ -283,7 +286,7 @@ export class RequestService {
             requestId,
             {
                 $set: {
-                    reject: {user: user.sub._id, ...rejectRequestDto, date: new Date()},
+                    reject: {user: user.sub._id, ...rejectRequestDto, reject_date: new Date().toLocaleDateString()},
                     status: RequestStatus.REJECTED
                 }
             },
@@ -298,7 +301,7 @@ export class RequestService {
                 $set: {
                     request_step: RequestStep.STEP_3,
                     status: RequestStatus.TREATMENT_PENDING,
-                    accept: {date: new Date()}
+                    accept: {accept_date: new Date().toLocaleDateString()}
                 }
             },
             {new: true, upsert: true}
@@ -309,4 +312,7 @@ export class RequestService {
         return this.requestModel.findByIdAndDelete(requestId);
     }
 
+    getClaim() {
+        return this.claimModel.find()
+    }
 }

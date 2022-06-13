@@ -1,3 +1,3 @@
 export class IAccept {
-    date: Date
+    accept_date: Date
 }

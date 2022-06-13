@@ -4,5 +4,5 @@ export class IDocument<T> {
 
     description: string;
 
-    file: T[];
+    files: T[];
 }

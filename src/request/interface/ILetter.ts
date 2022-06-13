@@ -2,10 +2,10 @@ export class ILetter<T> {
 
     letter_type: string;
 
-    objet: string;
+    object: string;
 
     description?: string
 
-    file?: T[]
+    files?: T[]
 
 }

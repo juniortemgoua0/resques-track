@@ -4,6 +4,6 @@ export class IReject {
 
     description: string;
 
-    date: string;
+    reject_date: string;
 
 }
