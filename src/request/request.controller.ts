@@ -25,16 +25,18 @@ export class RequestController {
     //     return this.requestService.getAllRequests();
     // }
 
-    @Get('claim')
-    getClaim(){
-        return this.requestService.getClaim();
-    }
-
     @Roles(Role.STUDENT , Role.SECRETARY, Role.EXECUTIVE_OFFICER, Role.HEAD_OF_DEPARTMENT , Role.TEACHER, Role.IT_OFFICER)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Get('')
     getUsersCorrespondRequest(@Request() req: any){
         return this.requestService.getUsersCorrespondRequest(req.user);
+    }
+
+    @Roles(Role.STUDENT , Role.SECRETARY, Role.EXECUTIVE_OFFICER, Role.HEAD_OF_DEPARTMENT , Role.TEACHER, Role.IT_OFFICER)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Get('counter')
+    getUserRequestsCounter(@Request() req: any){
+        return this.requestService.getUserRequestsCounter(req.user);
     }
 
     @Get(':studentId')

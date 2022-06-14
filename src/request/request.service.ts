@@ -39,7 +39,6 @@ export class RequestService {
     async getUsersCorrespondRequest(user: any) {
 
         const {role, sub} = user
-
         let school: string;
         let result = [];
         switch (role) {
@@ -96,6 +95,42 @@ export class RequestService {
                     .then(res => res.filter(r => r.student.school.toString() === school))
                     .then(res => result = res)
                 return result;
+        }
+    }
+
+    async getUserRequestsCounter(user: any) {
+
+        const {role, sub} = user
+
+        switch (role) {
+            case Role.STUDENT :
+                let result = {draft: 0, pending: 0, end: 0}
+                await this.requestModel.find()
+                    .then(res => res.map(r => {
+                        if (r.status === RequestStatus.DRAFT) {
+                            result.draft++
+                        } else if (r.request_step === RequestStep.STEP_1 ||
+                            r.request_step === RequestStep.STEP_2 ||
+                            r.request_step === RequestStep.STEP_3 ||
+                            r.request_step === RequestStep.STEP_4 ||
+                            r.request_step === RequestStep.STEP_5) {
+                            result.pending++
+                        } else {
+                            result.end++
+                        }
+                    }))
+
+                return result;
+
+            case Role.TEACHER:
+
+            case Role.HEAD_OF_DEPARTMENT:
+
+            case Role.SECRETARY:
+
+            case Role.EXECUTIVE_OFFICER:
+
+            default:
         }
     }
 
@@ -315,7 +350,4 @@ export class RequestService {
         return this.requestModel.findByIdAndDelete(requestId);
     }
 
-    getClaim() {
-        return this.claimModel.find()
-    }
 }

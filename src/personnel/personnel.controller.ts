@@ -13,6 +13,11 @@ export class PersonnelController {
         return this.personnelService.getOnePersonnel(personnelId);
     }
 
+    @Get('school/teacher')
+    getTeacherPersonnel(){
+        return this.personnelService.getTeacherPersonnel()
+    }
+
     @Get('school/:schoolId')
     getAllPersonnel(@Param('schoolId') schoolId: string) {
         return this.personnelService.getAllPersonnel(schoolId)

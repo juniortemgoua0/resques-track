@@ -2,9 +2,9 @@ export class IAssign {
 
     teacher_id: string;
 
-    assign_date: Date;
+    assign_date: string;
 
-    limit_date: Date;
+    limit_date: string;
 
     description: string;
 

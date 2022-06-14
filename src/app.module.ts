@@ -13,6 +13,7 @@ import {AppController} from './app.controller';
 import {RequestModule} from './request/request.module';
 import { LevelModule } from './level/level.module';
 import { PersonnelModule } from './personnel/personnel.module';
+import {AppService} from "./app.service";
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { PersonnelModule } from './personnel/personnel.module';
     ],
     exports: [ConfigModule],
     controllers: [AppController],
+    providers: [AppService]
 })
 export class AppModule {
 

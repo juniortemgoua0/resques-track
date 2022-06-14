@@ -5,5 +5,4 @@ export class IReject {
     description: string;
 
     reject_date: string;
-
 }

@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {ModelName} from "../helpers";
+import {ModelName, Role} from "../helpers";
 import {Model} from "mongoose";
 import {PersonnelDocument} from "./schema/personnel.schema";
 import {CreatePersonnelDto, UpdatePersonnelDto} from "./dto";
@@ -59,5 +59,10 @@ export class PersonnelService {
 
     deletePersonnel(personnelId: string) {
 
+    }
+
+    getTeacherPersonnel() {
+        return this.personnelModel.find()
+            .where({role: Role.TEACHER})
     }
 }

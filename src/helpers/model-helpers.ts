@@ -12,5 +12,6 @@ export enum ModelName {
     ROLE = "role",
     CLAIM = "claim",
     LETTER = "letter",
-    DOCUMENT= "document"
+    DOCUMENT = "document",
+    REASON = "reason"
 }
