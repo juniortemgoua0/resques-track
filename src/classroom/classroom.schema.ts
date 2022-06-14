@@ -26,8 +26,6 @@ export class Classroom {
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: ModelName.COURSE}], default: []})
     courses: Course[];
 
-    // @Prop({required:true})
-    // level: true;
 }
 
 export const ClassroomSchema = SchemaFactory.createForClass(Classroom)

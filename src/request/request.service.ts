@@ -44,9 +44,10 @@ export class RequestService {
         switch (role) {
             case Role.STUDENT :
                 console.log(Role.STUDENT)
-                return this.requestModel.find()
+                return this.requestModel.find({$orderby: {submit_date: -1}})
                     .where({student: sub.student})
                     .populate(['course', 'student', 'supporting_documents', 'claim'])
+
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
@@ -81,7 +82,7 @@ export class RequestService {
                 await this.requestModel.find()
                     .where({status: RequestStatus.SUBMITTED})
                     .populate(['course', 'student', 'supporting_documents', 'claim'])
-                    .then(res => res.filter(r => r.student.school.toString() === school))
+                    .then(res => res.filter(r => r.student?.school.toString() === school))
                     .then(res => result = res)
                 return result;
 
