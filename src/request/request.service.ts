@@ -35,7 +35,6 @@ export class RequestService {
     ) {
     }
 
-
     async getUsersCorrespondRequest(user: any) {
 
         const {role, sub} = user
@@ -82,7 +81,7 @@ export class RequestService {
                 await this.requestModel.find()
                     .where({status: RequestStatus.SUBMITTED})
                     .populate(['course', 'student', 'supporting_documents', 'claim'])
-                    .then(res => res.filter(r => r.student?.school.toString() === school))
+                    .then(res => res.filter(r => r.student?.school?.toString() === school))
                     .then(res => result = res)
                 return result;
 
@@ -108,18 +107,20 @@ export class RequestService {
                 let result = {draft: 0, pending: 0, end: 0}
                 await this.requestModel.find()
                     .then(res => res.map(r => {
-                        if (r.status === RequestStatus.DRAFT) {
-                            result.draft++
-                        } else if (r.request_step === RequestStep.STEP_1 ||
-                            r.request_step === RequestStep.STEP_2 ||
-                            r.request_step === RequestStep.STEP_3 ||
-                            r.request_step === RequestStep.STEP_4 ||
-                            r.request_step === RequestStep.STEP_5) {
-                            result.pending++
-                        } else {
-                            result.end++
-                        }
-                    }))
+                                if (r.status === RequestStatus.DRAFT) {
+                                    result.draft++
+                                } else if (r.request_step === RequestStep.STEP_1 ||
+                                    r.request_step === RequestStep.STEP_2 ||
+                                    r.request_step === RequestStep.STEP_3 ||
+                                    r.request_step === RequestStep.STEP_4 ||
+                                    r.request_step === RequestStep.STEP_5) {
+                                    result.pending++
+                                } else {
+                                    result.end++
+                                }
+                            }
+                        )
+                    )
 
                 return result;
 
