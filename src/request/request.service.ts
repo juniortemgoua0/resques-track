@@ -177,7 +177,7 @@ export class RequestService {
             }
         }
 
-        const createdRequest = await new this.requestModel({
+        const createdRequest = await (await new this.requestModel({
             ...remain,
             student: student_id,
             claim: claim_id,
@@ -187,7 +187,7 @@ export class RequestService {
             status: submit_state === RequestSubmitState.DRAFT ? RequestStatus.DRAFT : RequestStatus.SUBMITTED,
             request_step: submit_state === RequestSubmitState.DRAFT ? RequestStep.STEP_1 : RequestStep.STEP_2,
             submit_date: RequestSubmitState.SAVE ? new Date().toLocaleDateString() : "-",
-        }).save();
+        }).save()).populate(['course', 'student', 'supporting_documents', 'claim']);
 
         await this.studentModel.findByIdAndUpdate(
             student_id,

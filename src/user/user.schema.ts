@@ -38,7 +38,6 @@ export class User {
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: ModelName.PERSONNEL})
     personnel: Personnel;
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
