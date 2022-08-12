@@ -38,15 +38,15 @@ export class RequestService {
     async getUsersCorrespondRequest(user: any) {
 
         const {role, sub} = user
+        console.log(sub)
         let school: string;
         let result = [];
         switch (role) {
             case Role.STUDENT :
                 console.log(Role.STUDENT)
-                return this.requestModel.find({$orderby: {submit_date: -1}})
+                return this.requestModel.find()
                     .where({student: sub.student})
                     .populate(['course', 'student', 'supporting_documents', 'claim'])
-
 
             case Role.TEACHER:
                 console.log(Role.TEACHER)
