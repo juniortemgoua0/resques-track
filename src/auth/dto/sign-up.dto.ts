@@ -19,7 +19,7 @@ export class SignUpDto{
     @IsNotEmpty()
     user_status: string;
 
-    @IsString()
+    @IsString()  
     @IsNotEmpty()
     current_user_id: string;
 }
